@@ -1946,6 +1946,7 @@ sub coolingMapMode {
     my $inputFile = $keyName . ".cloudyIn";
     my $outputFile = $keyName . ".cloudyOut";
     my $coolingFile = $keyName . ".cooling";
+	my $coolingEachFile = $keyName . ".coolingEach";
     my $heatingFile = $keyName . ".heating";
     my $abundanceFile = $keyName . ".abundance";
     my $ionizationFile = $keyName . ".ionization";
@@ -1961,6 +1962,7 @@ sub coolingMapMode {
 	unlink $inputFile if (-e $inputFile);
 	unlink $outputFile if (-e $outputFile);
 	unlink $coolingFile if (-e $coolingFile);
+	unlink $coolingEachFile if (-e $coolingEachFile);
 	unlink $heatingFile if (-e $heatingFile);
 	unlink $abundanceFile if (-e $abundanceFile);
 	unlink $ionizationFile if (-e $ionizationFile);
@@ -2001,6 +2003,7 @@ sub coolingMapMode {
     my $tempInputFile = $inputFile . $tempFileSuffix;
     my $tempOutputFile = $outputFile . $tempFileSuffix;
     my $tempCoolingFile = $coolingFile . $tempFileSuffix;
+	my $tempCoolingEachFile = $coolingEachFile . $tempFileSuffix;
     my $tempHeatingFile = $heatingFile . $tempFileSuffix;
     my $tempAbundanceFile = $abundanceFile . $tempFileSuffix;
     my $tempIonizationFile = $ionizationFile . $tempFileSuffix;
@@ -2056,6 +2059,7 @@ sub coolingMapMode {
 
 	# add cooling map mode commands
 	push @runCommands, "punch last cooling file = \"$tempCoolingFile\"\n";
+	push @runCommands, "punch last cooling each file = \"$tempCoolingEachFile\"\n";
 	push @runCommands, "punch last heating file = \"$tempHeatingFile\"\n";
 	push @runCommands, "punch last abundance file = \"$tempAbundanceFile\"\n";
 	push @runCommands, "punch last ionization means file = \"$tempIonizationFile\"\n";
