@@ -2081,7 +2081,8 @@ sub coolingMapMode {
 
         # Look for a crash in a reprocess run.
         if ($reprocess_run) {
-            if (&makeTempFile($tempPhysicalConditionsFile, $separator)) {
+			# Edit this from physical bc we don't need it with our current cooling
+            if (&makeTempFile($tempCoolingFile, $separator)) {
                 $cloudyCrashed = 1;
             }
         }
@@ -2100,10 +2101,6 @@ sub coolingMapMode {
 
 	# if no crash, get the stuff we want
 	else {
-	    # get H and e- number density
-	    my ($hden,$eden) = &getPhysicalConditions($tempPhysicalConditionsFile,
-						      $separator);
-
 	    # get heating and cooling
 	    ($heating,$cooling) = &getCooling($tempCoolingFile,
 					      $separator);
@@ -2114,6 +2111,11 @@ sub coolingMapMode {
 		$scaleFactor = $hden * $hden;
 	    }
 	    elsif ($coolingScaleFactor == 2) {
+		# move the call that looks for electron number density to here.
+		# If we aren't using scale factor mode 2 theb we don't need the
+		# .physical files - which we might not have when re-processing data.
+		my ($hden,$eden) = &getPhysicalConditions($tempPhysicalConditionsFile,
+								$separator);
 		$scaleFactor = $hden * $eden;
 	    }
 	    else {
@@ -2264,6 +2266,8 @@ sub getCooling {
 
     # if this is a reprocess run, create a temp file from the data
     if ($reprocess_run) {
+      # Changed from reading in physical conditions file as we don't
+	  # always have these for reprocessing runs.
       &makeTempFile($coolingFile, $separator);
     }
 
@@ -2775,6 +2779,7 @@ sub emissivityMapMode {
         my $separator = sprintf "for T = %.3e.\n", $temperature;
 
         # Look for a crash in a reprocess run.
+		# As changed in getCooling this doesn't need to be Physical conditions.
         if ($reprocess_run) {
             if (&makeTempFile($tempPhysicalConditionsFile, $separator)) {
                 $cloudyCrashed = 1;
