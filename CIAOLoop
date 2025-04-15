@@ -71,7 +71,7 @@ my $restart = 0;
 # Resume mode: scan for incomplete maps and start there.
 my $resume = 0;
 
-# A reprocess run (using existing data) 
+# A reprocess run (using existing data)
 # or a run that will call Cloudy.
 my $reprocess_run = 0;
 
@@ -348,7 +348,7 @@ while (my $arg = shift @ARGV) {
 	$multiProcessor = 1;
 	$parallel = 1;
 	$numberMultiProcessors = shift @ARGV;
-	die "Argument after -np flag should be a positive integer.\n" if (($numberMultiProcessors =~ /\D/) || 
+	die "Argument after -np flag should be a positive integer.\n" if (($numberMultiProcessors =~ /\D/) ||
 									  ($numberMultiProcessors <= 0));
     }
 
@@ -427,8 +427,8 @@ while (@machinesUnavailable) {
 	# children communicate that they're done by deleting their .mach file
 	my $runningMachineFile;
 	if ($multiParts) {
-	    $runningMachineFile = $outputDir . $outputFilePrefix . 
-		".part" . $thisMultiPart . "_" . $totalMultiParts . 
+	    $runningMachineFile = $outputDir . $outputFilePrefix .
+		".part" . $thisMultiPart . "_" . $totalMultiParts .
 		"_" . $machineRunning . ".mach";
 	}
 	else {
@@ -464,60 +464,60 @@ print "Run completed successfully at " . scalar (localtime) . "\n";
 ##
 ##    readParameterFile - Read all parameters and commands from file
 ##
-##    writeRunFileHeader - Write header for run file, containing 
-##                         general information on run and all files 
+##    writeRunFileHeader - Write header for run file, containing
+##                         general information on run and all files
 ##                         made.
 ##
-##    findRestartIndex - If run is being restarted with -r flag, 
+##    findRestartIndex - If run is being restarted with -r flag,
 ##                       find where run left off and start there.
 ##
-##    recurse - This is the recursive engine that loops over all 
-##              values of all commands, generating commands to be 
+##    recurse - This is the recursive engine that loops over all
+##              values of all commands, generating commands to be
 ##              run by Cloudy.
 ##
-##    processCommands - Recurse creates a complicated data structure 
-##                      of commands to be given to Cloudy.  This 
-##                      subroutine turns that data structure into 
-##                      a simple array with one Cloudy-ready command 
+##    processCommands - Recurse creates a complicated data structure
+##                      of commands to be given to Cloudy.  This
+##                      subroutine turns that data structure into
+##                      a simple array with one Cloudy-ready command
 ##                      in each element.
-##                      Also generates an array whose elements can 
-##                      be used in a header file specific to each 
+##                      Also generates an array whose elements can
+##                      be used in a header file specific to each
 ##                      iteration through the loop commands.
-##                      Also generates an array containing names of 
+##                      Also generates an array containing names of
 ##                      any extra output files specified by the user.
-##                      Return value of this function is a set of 
+##                      Return value of this function is a set of
 ##                      pointers to each of the three above arrays.
 ##
 ##    runCloudy - This subroutine makes the actual call to Cloudy.
-##                It takes in names of input and output files to be 
-##                used with Cloudy, as well as an array containing 
-##                all commands to be given, in the form provided by 
-##                processCommands.  After Cloudy exits, this routine 
-##                calls checkForCrash for any signs that Cloudy did 
-##                not run successfully.  Return value is an array 
+##                It takes in names of input and output files to be
+##                used with Cloudy, as well as an array containing
+##                all commands to be given, in the form provided by
+##                processCommands.  After Cloudy exits, this routine
+##                calls checkForCrash for any signs that Cloudy did
+##                not run successfully.  Return value is an array
 ##                containing any warning produced by Cloudy.
 ##
-##    runCloudyMode - Calls the specific run mode subroutine selected 
+##    runCloudyMode - Calls the specific run mode subroutine selected
 ##                    by the user.
-##                    If in parallel mode, passes Cloudy calls out 
-##                    to machines specified in machine file given 
+##                    If in parallel mode, passes Cloudy calls out
+##                    to machines specified in machine file given
 ##                    with -p flag.
-##                    Also, updates run file with information on 
+##                    Also, updates run file with information on
 ##                    each iteration through commands.
 ##
-##    checkForCrash - Parses through cloudy output, searching for 
-##                    warnings and cautions.  Returns any that are 
+##    checkForCrash - Parses through cloudy output, searching for
+##                    warnings and cautions.  Returns any that are
 ##                    found.
 ##
-##    getMachines - If parallel mode is enabled with the -p flag, 
-##                  read in an mpirun-like machine file to get list 
+##    getMachines - If parallel mode is enabled with the -p flag,
+##                  read in an mpirun-like machine file to get list
 ##                  of available machines.
 ##
-##    makeTempFile - If this is a reprocess run, make temp files 
-##                   from the stored data files for use in the 
+##    makeTempFile - If this is a reprocess run, make temp files
+##                   from the stored data files for use in the
 ##                   post-processing.
 ##
-##    pushFile - Appends contents of one file to another, adding 
+##    pushFile - Appends contents of one file to another, adding
 ##               contents of a string to the appended file.
 ##
 ##    check_point_completed - Check if a point in the map has been
@@ -844,7 +844,7 @@ sub readParameterFile {
 			    $numbers[-1]++;
 			}
 		    }
-		   
+
 		    # loop values given in a list
 		    else {
 			$values =~ s/,/ /g;
@@ -1023,7 +1023,7 @@ sub readParameterFile {
       elsif ($line =~ /^emissivityMapEnergyUnits(\z|[\s\=])/i) {
 	  my (undef,$value) = split /=/, $line, 2;
 	  (undef,$value) = split " ", $line, 2 unless (defined($value));
-	  $value =~ s/^\s+//;	  
+	  $value =~ s/^\s+//;
 	  die "No value given for energy units on line $lineNumber of $parameterFile.\n"
 	      unless ($value);
 	  $emissivityMapEnergyUnits = $value;
@@ -1033,7 +1033,7 @@ sub readParameterFile {
       elsif ($line =~ /^emissivityMapLogEnergyBins(\z|[\s\=])/i) {
 	  my (undef,$value) = split /=/, $line, 2;
 	  (undef,$value) = split " ", $line, 2 unless (defined($value));
-	  $value =~ s/^\s+//;	  
+	  $value =~ s/^\s+//;
 	  die "emissivityMapLogEnergyBins must be either 0 or 1 on line $lineNumber of $parameterFile.\n"
 	      unless (($value == 0) || ($value == 1));
 	  $emissivityMapLogEnergyBins = $value;
@@ -1048,7 +1048,7 @@ sub readParameterFile {
 	my (undef,$value) = split /=/, $line, 2;
 	(undef,$value) = split " ", $line, 2 unless (defined($value));
 	@ionFractionElements = split " ", $value;
-	die "No elements given for ion fraction tables on line $lineNumber of $parameterFile.\n" 
+	die "No elements given for ion fraction tables on line $lineNumber of $parameterFile.\n"
 	  unless (@ionFractionElements);
       }
 
@@ -1063,7 +1063,7 @@ sub readParameterFile {
         die "No line given with lineMapLine command.\n" unless defined($value);
         $value =~ s/^\s*//;
         push @lineMapLines, $value;
-      }      
+      }
 
       else {
 	  die "Unrecognized line: $line on line $lineNumber of $parameterFile.\n";
@@ -1226,7 +1226,7 @@ sub recurse {
 		    $commands[$commandIndex][$q] =~ s/\*/$loopCommands[$commandIndex][$q]{values}[$w]/;
 		}
 		else {
-		    $commands[$commandIndex][$q] = 
+		    $commands[$commandIndex][$q] =
 			"$loopCommands[$commandIndex][$q]{command} $loopCommands[$commandIndex][$q]{values}[$w]\n";
 		}
 		$addToString .= "$loopCommands[$commandIndex][$q]{values}[$w],";
@@ -1284,8 +1284,8 @@ sub processCommands {
     # first, go through list of commands given everytime
     for (my $q = 0;$q < @constantCommands;$q++) {
 
-	# If the command is actually a file containing commands, it will appear 
-	# as a CODE reference, which is actually a reference to a subroutine that 
+	# If the command is actually a file containing commands, it will appear
+	# as a CODE reference, which is actually a reference to a subroutine that
 	# will return the file's contents.  Got all that?
 	if (ref($constantCommands[$q]) eq 'CODE') {
 
@@ -1297,8 +1297,8 @@ sub processCommands {
 
 		my $tempCommand = $commandFromCode;
 
-		# If a dollar sign '$' appears in the command, that symbol will be replaced 
-		# by the current run index.  This is useful for commands that produce 
+		# If a dollar sign '$' appears in the command, that symbol will be replaced
+		# by the current run index.  This is useful for commands that produce
 		# output files.
 		if ($commandFromCode =~ /\$/) {
 		    $tempCommand =~ s/\$/$keyName/;
@@ -1317,8 +1317,8 @@ sub processCommands {
 
 	    my $tempCommand = $constantCommands[$q];
 
-	    # If a dollar sign '$' appears in the command, that symbol will be replaced 
-	    # by the current run index.  This is useful for commands that produce 
+	    # If a dollar sign '$' appears in the command, that symbol will be replaced
+	    # by the current run index.  This is useful for commands that produce
 	    # output files.
 	    if ($constantCommands[$q] =~ /\$/) {
 
@@ -1363,8 +1363,8 @@ sub processCommands {
 	    $headerCommands[-1] .= "# }\n";
 	}
 
-	# If the command is actually a file containing commands, it will appear 
-	# as a CODE reference, which is actually a reference to a subroutine that 
+	# If the command is actually a file containing commands, it will appear
+	# as a CODE reference, which is actually a reference to a subroutine that
 	# will return the file's contents.  Just like above.
 	elsif (ref($command) eq 'CODE') {
 
@@ -1501,8 +1501,8 @@ sub runCloudyMode {
 		  # signal that machine is in use by creating a unique file
 		  my $runningMachineFile;
 		  if ($multiParts) {
-		      $runningMachineFile = $outputDir . $outputFilePrefix . 
-			  ".part" . $thisMultiPart . "_" . $totalMultiParts . 
+		      $runningMachineFile = $outputDir . $outputFilePrefix .
+			  ".part" . $thisMultiPart . "_" . $totalMultiParts .
 			  "_" . $machineToAssign . ".mach";
 		  }
 		  else {
@@ -1511,7 +1511,7 @@ sub runCloudyMode {
 		  open (MACH, ">$runningMachineFile");
 		  print MACH "$machines[$machineToAssign-1] starting run $currentRunIndex at " . scalar (localtime) . "\n";
 		  close (MACH);
-		
+
 		  # let's fork
 		  # Parent will do nothing, return to managing everything.
 		  # Child will make the call to Cloudy.
@@ -1562,8 +1562,8 @@ sub runCloudyMode {
 
 		      my $machineUnavailableFile;
 		      if ($multiParts) {
-			  $machineUnavailableFile = $outputDir . $outputFilePrefix . 
-			      ".part" . $thisMultiPart . "_" . $totalMultiParts . 
+			  $machineUnavailableFile = $outputDir . $outputFilePrefix .
+			      ".part" . $thisMultiPart . "_" . $totalMultiParts .
 			      "_" . $machOut . ".mach";
 		      }
 		      else {
@@ -1597,7 +1597,7 @@ sub runCloudyMode {
 
 	# if running in serial mode, do it this way
 	else {
- 
+
 	    # run Cloudy
 	    my $tstart = time;
 	    print scalar(localtime) . " - ";
@@ -1659,7 +1659,7 @@ sub checkForCrash {
     # Cloudy versions 07.02 and earlier.
     ## if (!($lines[-1] =~ /Stop in maincl/) || ($lines[-1] =~ /return value is 1/)) {
     # Cloudy versions 08 and later.
-    if (!($lines[-1] =~ /Cloudy exited OK/) || 
+    if (!($lines[-1] =~ /Cloudy exited OK/) ||
 	($lines[-1] =~ /return value is 1/)) {
 	$cloudyCrashed = 1;
 
@@ -1825,7 +1825,7 @@ sub pushFile {
 #####################################################################
 ## CONTENTS ##
 ##
-##    bareMode - run Cloudy with commands provided with no further 
+##    bareMode - run Cloudy with commands provided with no further
 ##               data manipulation.
 
 #####################################################################
@@ -1858,63 +1858,63 @@ sub bareMode {
 #####################################################################
 ## CONTENTS ##
 ##
-##    coolingMapMode - run Cloudy, looping over fixed temperatures, 
-##                     extracting heating and cooling to create 
-##                     tables of heating and cooling versus 
+##    coolingMapMode - run Cloudy, looping over fixed temperatures,
+##                     extracting heating and cooling to create
+##                     tables of heating and cooling versus
 ##                     temperature.
-##                     The output file also includes a calculation 
-##                     of the mean molecular weight.  However, the 
-##                     current mmw calculation does not include the 
+##                     The output file also includes a calculation
+##                     of the mean molecular weight.  However, the
+##                     current mmw calculation does not include the
 ##                     molecules.
-##                     Since Cloudy calculates equilibrium species 
-##                     populations, it will arrive at solutions for 
+##                     Since Cloudy calculates equilibrium species
+##                     populations, it will arrive at solutions for
 ##                     the molecular H abundance that are too high.
-##                     This is because equilibrium H2 abundance is 
-##                     usuall only reach on timescale longer than the 
+##                     This is because equilibrium H2 abundance is
+##                     usuall only reach on timescale longer than the
 ##                     age of the universe.
-##                     We correct for this by calculating H2 
-##                     abundances externally and feeding them to 
+##                     We correct for this by calculating H2
+##                     abundances externally and feeding them to
 ##                     Cloudy.
-##                     Unfortunately, this wreaks havoc on Cloudy's 
-##                     atomic H calculation, so we extract the H2 
-##                     cooling and then add it to a model calculated 
+##                     Unfortunately, this wreaks havoc on Cloudy's
+##                     atomic H calculation, so we extract the H2
+##                     cooling and then add it to a model calculated
 ##                     with no H2 molecules.
-##                     This option is enabled by specifying an 
-##                     external H2 fraction table with the 
-##                     coolingMapH2FractionTableFile parameter in 
+##                     This option is enabled by specifying an
+##                     external H2 fraction table with the
+##                     coolingMapH2FractionTableFile parameter in
 ##                     the parameter file.
 ##                     Update: I never use the H2 fraction tables.
-##                     Instead, I simply create a normal cooling 
+##                     Instead, I simply create a normal cooling
 ##                     grid and one with H/He only and subtract the
 ##                     two to make metals-only cooling grids.
 ##
 ##    coolingMapModeInitialize - initializes cooling map mode.
-##                               Loads atomic weight data for mmw 
+##                               Loads atomic weight data for mmw
 ##                               calculation.
 ##                               Reads external H2 fraction table,
 ##                               if specified.
-##                               Checks that cooling map temperature 
-##                               range is defined properly and 
+##                               Checks that cooling map temperature
+##                               range is defined properly and
 ##                               creates temperature list.
 ##
-##    getCooling - retrieves total heating and cooling from Cloudy 
-##                 ouput file created with the 'punch cooling' 
-##                 command which is automatically given in cooling 
+##    getCooling - retrieves total heating and cooling from Cloudy
+##                 ouput file created with the 'punch cooling'
+##                 command which is automatically given in cooling
 ##                 map mode.
 ##
-##    getCoolingContribution - retrieves cooling due to one specific 
-##                             radiative process.  Currently, this 
-##                             is used to get cooling due to 
+##    getCoolingContribution - retrieves cooling due to one specific
+##                             radiative process.  Currently, this
+##                             is used to get cooling due to
 ##                             molecular hydrogen.
 ##
-##    getHeatingContribution - Same as getCoolingContribution, but 
+##    getHeatingContribution - Same as getCoolingContribution, but
 ##                             for heating.
 ##
-##    getMeanMolecularWeight - calculates the mean molecular weight 
-##                             of the gas.  Parses through Cloudy 
-##                             output produced with the 'punch 
-##                             abundance' and 'punch ionization' 
-##                             commands automatically given in 
+##    getMeanMolecularWeight - calculates the mean molecular weight
+##                             of the gas.  Parses through Cloudy
+##                             output produced with the 'punch
+##                             abundance' and 'punch ionization'
+##                             commands automatically given in
 ##                             cooling map mode.
 ##
 ##    loadMassData - fills atomic weight array.
@@ -2180,7 +2180,7 @@ sub coolingMapMode {
 
 #####################################################################
 ##################### coolingMapModeInitialize ######################
-# Initialize cooling map mode by loading atomic mass data and 
+# Initialize cooling map mode by loading atomic mass data and
 # creating temperature list.
 
 sub coolingMapModeInitialize {
@@ -2192,9 +2192,9 @@ sub coolingMapModeInitialize {
     die "coolingMapdT and coolingMapdLogT cannot both be set.\n"
 	if (defined($coolingMapdT) && defined($coolingMapdLogT));
 
-    my $TValuesSet = int(defined($coolingMapTmin)) + 
-	int(defined($coolingMapTmax)) + 
-	int(defined($coolingMapdT) || defined($coolingMapdLogT)) + 
+    my $TValuesSet = int(defined($coolingMapTmin)) +
+	int(defined($coolingMapTmax)) +
+	int(defined($coolingMapdT) || defined($coolingMapdLogT)) +
 	int(defined($coolingMapTpoints));
 
     die "Temperature loop overdefined: set only three values.\n"
@@ -2258,7 +2258,7 @@ sub coolingMapModeInitialize {
 
 #####################################################################
 ########################### getCooling ##############################
-# Parse through Cloudy output file made with 'punch cooling' command 
+# Parse through Cloudy output file made with 'punch cooling' command
 # and return total heating and cooling.
 
 sub getCooling {
@@ -2286,7 +2286,7 @@ sub getCooling {
 
 #####################################################################
 ####################### getCoolingContribution ######################
-# Parse through file made with 'punch cooling' file and return cooling 
+# Parse through file made with 'punch cooling' file and return cooling
 # contribution of requested radiative process.
 
 sub getCoolingContribution {
@@ -2318,7 +2318,7 @@ sub getCoolingContribution {
 
 #####################################################################
 ####################### getHeatingContribution ######################
-# Parse through file made with 'punch heating' file and return heating 
+# Parse through file made with 'punch heating' file and return heating
 # contribution of requested radiative process.
 
 sub getHeatingContribution {
@@ -2350,7 +2350,7 @@ sub getHeatingContribution {
 
 #####################################################################
 ###################### getPhysicalConditions ########################
-# Parse through Cloudy output file made with 'punch physical 
+# Parse through Cloudy output file made with 'punch physical
 # conditions' command and return H density and electron density.
 
 sub getPhysicalConditions {
@@ -2361,7 +2361,7 @@ sub getPhysicalConditions {
       &makeTempFile($physicalConditionsFile, $separator);
     }
 
-    open (PHYS, "<$physicalConditionsFile") or die 
+    open (PHYS, "<$physicalConditionsFile") or die
 	"Couldn't open $physicalConditionsFile to get physicalConditions.\n";
     my @lines = <PHYS>;
     close (PHYS);
@@ -2373,8 +2373,8 @@ sub getPhysicalConditions {
 
 #####################################################################
 ####################### getMeanMolecularWeight ######################
-# Parse through files made with 'punch abundance' and 'punch ionization' 
-# commands to get atomic abundance and ionization fractions to calculate 
+# Parse through files made with 'punch abundance' and 'punch ionization'
+# commands to get atomic abundance and ionization fractions to calculate
 # mean molecular weight.
 
 sub getMeanMolecularWeight {
@@ -2423,7 +2423,7 @@ sub getMeanMolecularWeight {
 	}
 	last ION unless ($lines[$q]);
 	substr $lines[$q], 0, 11, "";
-	
+
 	while ((my $fraction = substr $lines[$q],0,7,"") && ($shell <= $species)) {
 	    $logIonizationFraction[$species-1][$shell] = $fraction;
 	    $ionizationPointers[$species-1][$shell] = \$fraction;
@@ -2637,13 +2637,13 @@ sub calculate_jeans_length {
 ##                        maps of luminosity for the given loop
 ##                        parameters.
 ##
-##    emissivityMapModeInitialize - calls coolingMapModeInitialize 
-##                                  to set up temperature bins, 
-##                                  then does something similar to 
+##    emissivityMapModeInitialize - calls coolingMapModeInitialize
+##                                  to set up temperature bins,
+##                                  then does something similar to
 ##                                  set up energy bins.
 ##
 ##    getContinuum - gets continuum and energy bins from Cloudy
-##                   output file.  Rebins Cloudy continuum to the 
+##                   output file.  Rebins Cloudy continuum to the
 ##                   user specified energy bins.
 
 #####################################################################
@@ -2943,7 +2943,7 @@ sub emissivityMapModeInitialize {
 	    $emissivityMapEnergyBins[$q] = $emissivityMapEnergies[$q] - $emissivityMapEnergies[$q-1];
 	}
 	else {
-	    $emissivityMapEnergyBins[$q] = 0.5 * ($emissivityMapEnergies[$q+1] - 
+	    $emissivityMapEnergyBins[$q] = 0.5 * ($emissivityMapEnergies[$q+1] -
 						  $emissivityMapEnergies[$q-1]);
 	}
     }
@@ -3011,7 +3011,7 @@ sub getContinuum {
     close (IN);
 
     # get frequencies from energies
-    die "Units: $emissivityMapEnergyUnits unavailable for conversion.\n" 
+    die "Units: $emissivityMapEnergyUnits unavailable for conversion.\n"
 	unless (defined($energyConversion{$emissivityMapEnergyUnits}));
     my @cloudyFrequencies;
     my @cloudyFrequencyBins;
@@ -3042,7 +3042,7 @@ sub getContinuum {
 	$gotLowerBound = 0;
       BIN: for (my $w = 0;$w < @cloudyFrequencies;$w++) {
 	  unless ($gotLowerBound) {
-	      if ($cloudyFrequencies[$w] - (0.5 * $cloudyFrequencyBins[$w]) > 
+	      if ($cloudyFrequencies[$w] - (0.5 * $cloudyFrequencyBins[$w]) >
 		  $emissivityMapFrequencies[$q] - (0.5 * $emissivityMapFrequencyBins[$q])) {
 		  $indexLower = $w - 1;
 		  $gotLowerBound = 1;
@@ -3063,12 +3063,12 @@ sub getContinuum {
 	my $binUpper;
 	for (my $w = $indexLower;$w <=$indexUpper;$w++) {
 	    $binLower = ($emissivityMapFrequencies[$q] - (0.5 * $emissivityMapFrequencyBins[$q]) >
-			 $cloudyFrequencies[$w] - (0.5 * $cloudyFrequencyBins[$w])) ? 
+			 $cloudyFrequencies[$w] - (0.5 * $cloudyFrequencyBins[$w])) ?
 			 $emissivityMapFrequencies[$q] - (0.5 * $emissivityMapFrequencyBins[$q]) :
 			 $cloudyFrequencies[$w] - (0.5 * $cloudyFrequencyBins[$w]);
 
 	    $binUpper = ($emissivityMapFrequencies[$q] + (0.5 * $emissivityMapFrequencyBins[$q]) <
-			 $cloudyFrequencies[$w] + (0.5 * $cloudyFrequencyBins[$w])) ? 
+			 $cloudyFrequencies[$w] + (0.5 * $cloudyFrequencyBins[$w])) ?
 			 $emissivityMapFrequencies[$q] + (0.5 * $emissivityMapFrequencyBins[$q]) :
 			 $cloudyFrequencies[$w] + (0.5 * $cloudyFrequencyBins[$w]);
 
@@ -3079,7 +3079,7 @@ sub getContinuum {
 	# convert to emissivity
 	# L = 4 pi r^2 F
 	# em = L / (4/3 pi ((r+dr)^3 - r^3)
-	$emissivityMapContinuum[$q] *= (3.0 * ($radius)**2) / 
+	$emissivityMapContinuum[$q] *= (3.0 * ($radius)**2) /
 	    (($radius-$depth+$dr)**3 - ($radius-$depth)**3);
 
     }
@@ -3335,7 +3335,7 @@ sub ionFractionMapMode {
 
 #####################################################################
 ################### ionFractionMapModeInitialize ####################
-# Initialize ion fraction map mode by loading atomic mass data and 
+# Initialize ion fraction map mode by loading atomic mass data and
 # creating temperature list.
 
 sub ionFractionMapModeInitialize {
@@ -3348,7 +3348,7 @@ sub ionFractionMapModeInitialize {
 
     # Check for valid elements.
     foreach my $element (@ionFractionElements) {
-      die "$element is not a valid element for ion fraction table." 
+      die "$element is not a valid element for ion fraction table."
 	unless (exists($atomicNumber{$element}));
     }
 
@@ -3356,7 +3356,7 @@ sub ionFractionMapModeInitialize {
 
 #####################################################################
 ########################### getIonFraction ##########################
-# Parse through files made with 'punch ionization' command to get 
+# Parse through files made with 'punch ionization' command to get
 # ion fractions.
 
 sub getIonFraction {
@@ -3406,7 +3406,7 @@ sub getIonFraction {
 	  }
 	}
 	substr $lines[$q], 0, 11, "";
-	
+
 	while ((my $fraction = substr $lines[$q],0,7,"") && ($shell <= $species)) {
 	  if ($target_element) {
 	    $logIonFraction{$target_element}[$shell] = $fraction;
@@ -3427,11 +3427,11 @@ sub getIonFraction {
 #####################################################################
 ## CONTENTS ##
 ##
-##    lineMapMode - 
+##    lineMapMode -
 ##
-##    lineMapModeInitialize - 
+##    lineMapModeInitialize -
 ##
-##    getLineEmissivities - 
+##    getLineEmissivities -
 ##
 
 #####################################################################
@@ -3628,7 +3628,7 @@ sub lineMapMode {
 
 #####################################################################
 ####################### lineMapModeInitialize #######################
-# Initialize line map mode by loading creating temperature list and 
+# Initialize line map mode by loading creating temperature list and
 # labels for the lines.
 
 sub lineMapModeInitialize {
@@ -3646,7 +3646,7 @@ sub lineMapModeInitialize {
 
 #####################################################################
 ####################### getLineEmissivities #########################
-# Parse through Cloudy output file made with 
+# Parse through Cloudy output file made with
 # 'save lines emissivity' command and return them
 
 sub getLineEmissivities {
@@ -3674,16 +3674,16 @@ sub getLineEmissivities {
 #####################################################################
 ################### Custom Cloudy Mode Subroutines ##################
 #####################################################################
-## These subroutines can be used as a template to create new custom 
+## These subroutines can be used as a template to create new custom
 ## Cloudy running modes.
 ##
 ## CONTENTS ##
 ##
 ##    newCustomMode - run Cloudy here and process any data produced.
 ##
-##    newCustomModeInitialize - Any initialize of custom Cloudy mode 
-##                              is done here.  Any processes that 
-##                              only need to be performed once would 
+##    newCustomModeInitialize - Any initialize of custom Cloudy mode
+##                              is done here.  Any processes that
+##                              only need to be performed once would
 ##                              go here.
 
 #####################################################################
